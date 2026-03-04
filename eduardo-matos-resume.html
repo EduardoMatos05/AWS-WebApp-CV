@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eduardo José Matos Uc — Ingeniero de Software</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --accent: #7fffb0;
+      --accent2: #4fd1ff;
+      --muted: #4a4a65;
+      --text: #e8e8f0;
+      --text-dim: #9090b0;
+      --border: #222230;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.3s, height 0.3s;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* SECTION 1 — HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated grid bg */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.4;
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift {
+      0% { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+
+    /* Glow blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.12;
+      animation: blobPulse 8s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
+    .blob-2 { width: 300px; height: 300px; background: var(--accent2); bottom: 0; left: 100px; animation-delay: -4s; }
+    @keyframes blobPulse {
+      from { transform: scale(1) rotate(0deg); }
+      to { transform: scale(1.2) rotate(15deg); }
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.8rem;
+      margin-bottom: 1.5rem;
+      border-radius: 2px;
+    }
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    .hero-name em {
+      color: var(--accent);
+      font-style: italic;
+    }
+    .hero-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-contacts {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background: #5dffaa;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(127,255,176,0.25);
+    }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    /* Profile image area */
+    .hero-visual {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .profile-frame {
+      position: relative;
+      width: 320px;
+      height: 320px;
+    }
+    .profile-ring {
+      position: absolute;
+      inset: -16px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: spin 20s linear infinite;
+    }
+    .profile-ring-2 {
+      position: absolute;
+      inset: -32px;
+      border: 1px dashed var(--muted);
+      border-radius: 50%;
+      animation: spin 35s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .profile-img {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--surface);
+      display: block;
+      background: var(--card);
+    }
+    .profile-placeholder {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--card), var(--surface));
+      border: 3px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .profile-placeholder svg {
+      opacity: 0.3;
+    }
+    .profile-placeholder span {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .profile-badge {
+      position: absolute;
+      bottom: 10px;
+      right: -20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      font-size: 0.7rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .profile-badge::before {
+      content: '⬤ ';
+      color: var(--accent);
+      animation: blink 2s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* SECTION SHARED */
+    section {
+      padding: 7rem 4rem;
+      position: relative;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-label::after {
+      content: '';
+      height: 1px;
+      width: 60px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 3rem;
+      color: var(--text);
+    }
+
+    /* SECTION 2 — EDUCACIÓN */
+    .edu-section {
+      background: var(--surface);
+    }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 1000px;
+    }
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .edu-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .edu-card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .edu-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(127,255,176,0.08);
+      border: 1px solid rgba(127,255,176,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    .edu-period {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    .edu-institution {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .edu-degree {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .edu-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      background: var(--surface);
+    }
+    .tag.green { border-color: rgba(127,255,176,0.3); color: var(--accent); background: rgba(127,255,176,0.05); }
+    .tag.blue { border-color: rgba(79,209,255,0.3); color: var(--accent2); background: rgba(79,209,255,0.05); }
+
+    /* SECTION 3 — EXPERIENCIA */
+    
+    .exp-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 1000px;
+    }
+    .exp-status {
+      grid-column: 1 / -1;
+      background: var(--card);
+      border: 1px solid rgba(127,255,176,0.3);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .status-dot {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px var(--accent);
+      animation: blink 2s step-end infinite;
+    }
+    .status-text {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .status-text strong { color: var(--accent); }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-4px);
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent2), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .project-card:hover::after { transform: scaleX(1); }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+    .project-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .project-link:hover { opacity: 1; }
+    .project-desc {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; gap: 3rem; }
+      .hero-visual { order: -1; }
+      .profile-frame { width: 220px; height: 220px; }
+      .profile-placeholder, .profile-img { width: 220px; height: 220px; }
+      section { padding: 5rem 1.5rem; }
+      .edu-grid, .exp-layout { grid-template-columns: 1fr; }
+      .edu-card.featured { grid-column: 1; grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">EMU</a>
+    <ul class="nav-links">
+      <li><a href="#hero">Inicio</a></li>
+      <li><a href="#educacion">Educación</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+    </ul>
+  </nav>
+
+  <!-- SECTION 1: PRESENTACIÓN -->
+  <section class="hero" id="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="hero-text">
+      <div class="hero-tag">// Ingeniero de Software en formación</div>
+      <h1 class="hero-name">
+        Eduardo<br/>
+        <em>José</em> Matos<br/>
+        Uc
+      </h1>
+      <p class="hero-subtitle">
+        Estudiante de Ingeniería de Software en la FMAT · UADY.<br/>
+        Apasionado por el desarrollo de software, buscando mis primeras prácticas profesionales y construyendo proyectos reales.
+      </p>
+      <div class="hero-contacts">
+        <a href="https://github.com/EduardoMatos05" target="_blank" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/eduardo-matos-1a928228a/" class="btn btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Contacto
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="profile-frame">
+        <div class="profile-ring"></div>
+        <div class="profile-ring-2"></div>
+        <img class="profile-img"
+     src="https://github.com/EduardoMatos05/AWS-WebApp-CV/blob/main/Recursos/EduardoMatos.jpeg?raw=true"
+     alt="Eduardo Matos"/>
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#7fffb0" stroke-width="1">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+        <div class="profile-badge">Buscando prácticas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: EDUCACIÓN -->
+  <section class="edu-section" id="educacion">
+    <div class="section-label">02 — Formación Académica</div>
+    <h2 class="section-title">Educación</h2>
+
+    <div class="edu-grid">
+      <!-- UADY card (featured) -->
+      <div class="edu-card featured reveal">
+        <div class="edu-icon">🎓</div>
+        <div>
+          <div class="edu-period">2022 — Presente</div>
+          <div class="edu-institution">Universidad Autónoma de Yucatán · FMAT</div>
+          <div class="edu-degree">Licenciatura en Ingeniería de Software<br/>Facultad de Matemáticas, Mérida, Yucatán</div>
+          <div class="edu-tags">
+            <span class="tag green">En curso</span>
+            <span class="tag">Algoritmos</span>
+            <span class="tag">Estructuras de datos</span>
+            <span class="tag">Bases de datos</span>
+            <span class="tag">Ingeniería de software</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cursos relevantes -->
+      <div class="edu-card reveal">
+        <div class="edu-period">Curso relevante</div>
+        <div class="edu-institution">Control de Versiones con Git</div>
+        <div class="edu-degree">Manejo de repositorios, ramas, pull requests y flujo de trabajo colaborativo con GitHub.</div>
+        <div class="edu-tags">
+          <span class="tag blue">Git</span>
+          <span class="tag blue">GitHub</span>
+        </div>
+      </div>
+
+      <div class="edu-card reveal">
+        <div class="edu-period">Curso relevante</div>
+        <div class="edu-institution">Desarrollo Web</div>
+        <div class="edu-degree">Fundamentos de HTML5, CSS3 y JavaScript para la creación de interfaces web modernas.</div>
+        <div class="edu-tags">
+          <span class="tag blue">HTML5</span>
+          <span class="tag blue">CSS3</span>
+          <span class="tag blue">JavaScript</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: EXPERIENCIA / PROYECTOS -->
+  <section class="exp-section" id="experiencia">
+    <div class="section-label">03 — Trabajo &amp; Proyectos</div>
+    <h2 class="section-title">Experiencia</h2>
+
+    <div class="exp-layout">
+      <!-- Status banner -->
+      <div class="exp-status reveal">
+        <div class="status-dot"></div>
+        <div class="status-text">
+          <strong>Actualmente buscando prácticas profesionales.</strong><br/>
+          Disponible para proyectos de desarrollo de software, aplicaciones web o móviles, y analisis de datos. Interesado en equipos donde pueda aprender y contribuir desde el primer día.
+        </div>
+      </div>
+
+      <!-- Proyectos escolares -->
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-name">Pagina Web con DB</div>
+          <a href="https://github.com/Edu343/Proyecto_DesarrolloWeb" target="_blank" class="project-link">
+            Ver repo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="project-desc">
+          Realizamos el diseño y base de datos de una pagina de una ferreteria.
+        </div>
+        <div class="edu-tags">
+          <span class="tag">JavaScript</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">XAMPP</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-name">Aplicacion de Java usando Framework</div>
+          <a href="https://github.com/EduardoMatos05/jminiapp" target="_blank" class="project-link">
+            Ver repo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="project-desc">
+          Juego de gato basado en framework educativo JminiApp, usado para aplicar buenas practicas del diseño del software.
+        </div>
+        <div class="edu-tags">
+          <span class="tag">Java</span>
+          <span class="tag">Maven</span>
+          <span class="tag">POO</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-name">Aplicacion Java Escritorio</div>
+          <a href="https://github.com/Edu343/NutriNube_ProyectoConstrucci-n" target="_blank" class="project-link">
+            Ver repo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="project-desc">
+          Creamos una aplicacion para ayudar a nutriologos a manejar sus datos para un mejor analisis y organización de sus pacientes
+        </div>
+        <div class="edu-tags">
+          <span class="tag">Java</span>
+          <span class="tag">MySQL</span>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Eduardo José Matos Uc</div>
+    <div class="footer-links">
+      <a href="https://github.com" target="_blank">GitHub</a>
+      <a href="mailto:eduardo@example.com">Email</a>
+      <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+    </div>
+    <div class="footer-copy">© 2025 · FMAT · UADY</div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 100);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
