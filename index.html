@@ -60,24 +60,17 @@
       top: 0; left: 0; right: 0;
       z-index: 100;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 1.2rem 4rem;
+      padding: 1rem 4rem;
       background: rgba(10,10,15,0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-      text-decoration: none;
-    }
+    .nav-logo { display: none; }
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 3rem;
       list-style: none;
     }
     .nav-links a {
@@ -489,6 +482,39 @@
       margin-bottom: 1rem;
     }
 
+    /* WIP project card */
+    .project-card.wip {
+      border-color: rgba(255, 190, 60, 0.3);
+    }
+    .project-card.wip::after {
+      background: linear-gradient(90deg, #ffbe3c, transparent);
+    }
+    .project-card.wip:hover {
+      border-color: #ffbe3c;
+    }
+    .wip-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ffbe3c;
+      border: 1px solid rgba(255,190,60,0.4);
+      background: rgba(255,190,60,0.06);
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      margin-bottom: 0.6rem;
+    }
+    .wip-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: #ffbe3c;
+      border-radius: 50%;
+      animation: blink 1.5s step-end infinite;
+    }
+    .tag.yellow { border-color: rgba(255,190,60,0.4); color: #ffbe3c; background: rgba(255,190,60,0.06); }
+
     /* FOOTER */
     footer {
       background: var(--surface);
@@ -536,6 +562,98 @@
       transform: translateY(0);
     }
 
+    /* PRINT STYLES — CV */
+    @media print {
+      @page {
+        margin: 1.2cm 1.5cm;
+        size: A4;
+      }
+      /* Hide chrome elements */
+      nav, .cursor, .cursor-ring, .blob, .profile-ring, .profile-ring-2,
+      .hero::before, .profile-badge { display: none !important; }
+
+      html, body {
+        background: #fff !important;
+        color: #111 !important;
+        font-size: 10pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Compact hero */
+      .hero {
+        min-height: unset !important;
+        padding: 1.5rem 1.5rem 1rem !important;
+        display: grid !important;
+        grid-template-columns: 1fr auto !important;
+        gap: 1rem;
+        page-break-after: avoid;
+      }
+      .hero-name {
+        font-size: 2rem !important;
+        color: #111 !important;
+      }
+      .hero-name em { color: #0a6e3f !important; }
+      .hero-tag {
+        border-color: #0a6e3f !important;
+        color: #0a6e3f !important;
+      }
+      .hero-subtitle { color: #333 !important; max-width: 100% !important; }
+      .btn {
+        background: #eee !important;
+        color: #111 !important;
+        border: 1px solid #ccc !important;
+        font-size: 8pt !important;
+        padding: 0.3rem 0.7rem !important;
+      }
+      .btn-primary { background: #0a6e3f !important; color: #fff !important; }
+
+      /* Profile image compact */
+      .profile-frame { width: 120px !important; height: 120px !important; }
+      .profile-img { width: 120px !important; height: 120px !important; border: 2px solid #0a6e3f !important; }
+
+      /* Sections */
+      section { padding: 1.5rem !important; }
+      .section-title { font-size: 1.4rem !important; color: #111 !important; margin-bottom: 1rem !important; }
+      .section-label { color: #0a6e3f !important; }
+      .section-label::after { background: #0a6e3f !important; }
+
+      /* Cards */
+      .edu-card, .project-card, .exp-status {
+        background: #f9f9f9 !important;
+        border: 1px solid #ddd !important;
+        color: #111 !important;
+        page-break-inside: avoid;
+      }
+      .edu-card::before { background: #0a6e3f !important; }
+      .edu-institution, .project-name { color: #111 !important; }
+      .edu-degree, .project-desc, .status-text { color: #444 !important; }
+      .edu-period { color: #0a6e3f !important; }
+
+      .tag {
+        border-color: #ccc !important;
+        color: #333 !important;
+        background: #eee !important;
+      }
+      .tag.green { border-color: #0a6e3f !important; color: #0a6e3f !important; background: #e8f5ee !important; }
+      .tag.blue { border-color: #0055aa !important; color: #0055aa !important; background: #e8eeff !important; }
+      .tag.yellow { border-color: #b07800 !important; color: #b07800 !important; background: #fff8e0 !important; }
+
+      .wip-badge { color: #b07800 !important; border-color: #b07800 !important; background: #fff8e0 !important; }
+      .project-card.wip { border-color: #b07800 !important; }
+
+      .edu-icon { background: #e8f5ee !important; border-color: rgba(10,110,63,0.3) !important; }
+
+      footer { display: none !important; }
+
+      /* Reveal visible by default for print */
+      .reveal { opacity: 1 !important; transform: none !important; }
+
+      /* Links visible in print */
+      a[href]::after { content: none !important; }
+      .project-link { color: #0055aa !important; opacity: 1 !important; }
+    }
+
     /* RESPONSIVE */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
@@ -580,7 +698,8 @@
       </h1>
       <p class="hero-subtitle">
         Estudiante de Ingeniería de Software en la FMAT · UADY.<br/>
-        Apasionado por el desarrollo de software, buscando mis primeras prácticas profesionales y construyendo proyectos reales.
+        Apasionado por el desarrollo de software, buscando mis primeras prácticas profesionales y construyendo proyectos reales.<br/><br/>
+        Gracias a mi sólido conocimiento de las bases de la Ingeniería de Software, soy capaz de aprender cualquier lenguaje o tecnología de forma rápida y efectiva.
       </p>
       <div class="hero-contacts">
         <a href="https://github.com/EduardoMatos05" target="_blank" class="btn btn-primary">
@@ -599,12 +718,10 @@
         <div class="profile-ring"></div>
         <div class="profile-ring-2"></div>
         <img class="profile-img"
-     src="https://github.com/EduardoMatos05/AWS-WebApp-CV/blob/main/Recursos/EduardoMatos.jpeg?raw=true"
-     alt="Eduardo Matos"/>
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#7fffb0" stroke-width="1">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
-        </div>
+          id="profileImg"
+          src="https://raw.githubusercontent.com/EduardoMatos05/AWS-WebApp-CV/main/Recursos/EduardoMatos.jpeg"
+          alt="Eduardo Matos"
+        />
         <div class="profile-badge">Buscando prácticas</div>
       </div>
     </div>
@@ -630,6 +747,20 @@
             <span class="tag">Bases de datos</span>
             <span class="tag">Ingeniería de software</span>
           </div>
+        </div>
+      </div>
+
+      <div class="edu-card reveal">
+        <div class="edu-period">Certificación · EF SET</div>
+        <div class="edu-institution">Inglés · Nivel C2 Proficient</div>
+        <div class="edu-degree">
+          Dominio completo del idioma inglés, tanto escrito como oral, según el Marco Común Europeo de Referencia (MCER).
+          <br/><a href="https://cert.efset.org/en/cxPPgF" target="_blank" style="color:var(--accent2);font-size:0.75rem;margin-top:0.4rem;display:inline-block;">Ver certificado →</a>
+        </div>
+        <div class="edu-tags">
+          <span class="tag green">C2 Proficient</span>
+          <span class="tag blue">EF SET</span>
+          <span class="tag blue">English</span>
         </div>
       </div>
 
@@ -726,21 +857,38 @@
 
         </div>
       </div>
+      <div class="project-card wip reveal">
+        <div class="wip-badge">En desarrollo</div>
+        <div class="project-header">
+          <div class="project-name">CV Web Personal</div>
+          <a href="https://github.com/EduardoMatos05/AWS-WebApp-CV" target="_blank" class="project-link" style="color:#ffbe3c;">
+            Ver repo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <div class="project-desc">
+          Sitio web de CV personal desplegado en AWS, con CI/CD, diseño responsivo y secciones dinámicas. Proyecto en continua mejora e iteración.
+        </div>
+        <div class="edu-tags">
+          <span class="tag yellow">En progreso</span>
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">AWS</span>
+          <span class="tag">CI/CD</span>
+        </div>
+      </div>
     </div>
   </section>
-
-  <!-- FOOTER -->
   <footer>
     <div class="footer-name">Eduardo José Matos Uc</div>
     <div class="footer-links">
       <a href="https://github.com" target="_blank">GitHub</a>
-      <a href="mailto:eduardo@example.com">Email</a>
+      <a href="/cdn-cgi/l/email-protection#650001100417010a25001d04081509004b060a08">Email</a>
       <a href="https://linkedin.com" target="_blank">LinkedIn</a>
     </div>
     <div class="footer-copy">© 2025 · FMAT · UADY</div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Custom cursor
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
@@ -760,7 +908,7 @@
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
           setTimeout(() => e.target.classList.add('visible'), i * 100);
-          io.unobserve(e.target);
+             io.unobserve(e.target);
         }
       });
     }, { threshold: 0.1 });
