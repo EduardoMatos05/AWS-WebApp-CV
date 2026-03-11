@@ -20,7 +20,6 @@ Aún estoy aprendiendo sobre servicios cloud y este proyecto refleja ese proceso
 
 Se desarrolló el CV en formato web usando HTML5 y CSS como base, incorporando datos personales, información académica y proyectos. Una vez terminado, se verificó su funcionamiento local antes de publicarlo.
 
-![Página web](Recursos/1.png)
 
 ---
 
@@ -88,7 +87,7 @@ rm -rf temp
 
 Una vez que la instancia pasó a estado **running** y superó las verificaciones de estado, se accedió al sitio usando el DNS público de AWS vía HTTP/HTTPS. La página cargó correctamente, confirmando el despliegue exitoso.
 
-![Verificación del sitio](Recursos/6.png)
+
 
 ---
 
